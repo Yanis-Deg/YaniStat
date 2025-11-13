@@ -1,0 +1,99 @@
+/* --- Style de base (votre thème) --- */
+body {
+    font-family: sans-serif;
+    background: #232323;
+    color: white;
+    /* On enlève les marges par défaut pour que la barre de menu colle aux bords */
+    margin: 0;
+    padding: 0;
+}
+
+/* --- La Barre de Navigation (Navbar) --- */
+.navbar {
+    background: #333; /* Un gris foncé pour la barre */
+    border-bottom: 2px solid #00c777; /* Votre couleur verte */
+    display: flex; /* Aligne les éléments horizontalement */
+    justify-content: space-between; /* Espace entre le logo et les menus */
+    align-items: center; /* Centre verticalement */
+    padding: 0 20px; /* Un peu d'espace sur les côtés */
+}
+
+/* Le "logo" ou titre du site */
+.nav-brand {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #00c777; /* Votre couleur verte */
+    text-decoration: none; /* Pas de soulignement */
+}
+
+/* --- La liste des menus (Accueil, Catégories...) --- */
+.nav-menu {
+    list-style: none; /* Enlève les puces */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Aligne les menus horizontalement */
+}
+
+.nav-menu li {
+    /* Position relative est cruciale pour le menu déroulant */
+    position: relative; 
+}
+
+/* Les liens dans la barre de menu */
+.nav-menu li a {
+    color: white;
+    text-decoration: none;
+    display: block; /* Important pour que toute la zone soit cliquable */
+    padding: 20px 25px; /* Donne de l'espace aux boutons */
+    font-size: 1.1em;
+}
+
+/* Effet au survol des boutons */
+.nav-menu li:hover > a {
+    background: #444;
+}
+
+/* --- La Magie du Menu Déroulant --- */
+
+/* 1. On cache le menu déroulant par défaut */
+.dropdown-menu {
+    display: none;
+    position: absolute; /* S'affiche par-dessus le reste */
+    left: 0;
+    top: 100%; /* Se positionne juste en dessous de son parent */
+    background: #333; /* Même fond que la barre */
+    min-width: 200px; /* Largeur minimale */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    
+    /* On réinitialise ces styles pour une liste verticale */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 2. On affiche le menu quand on survole le parent (ex: "Catégories") */
+li.dropdown:hover .dropdown-menu {
+    display: block; /* Fait apparaître le menu */
+}
+
+/* Liens à l'intérieur du menu déroulant */
+.dropdown-menu li a {
+    padding: 12px 20px;
+}
+
+/* Effet au survol des items dans le menu déroulant */
+.dropdown-menu li:hover a {
+    background: #555;
+}
+
+/* --- Contenu de la page (pour plus tard) --- */
+.page-content {
+    padding: 30px;
+}
+
+/* --- Ligne de séparation pour les menus --- */
+.dropdown-divider {
+    height: 1px;
+    background: #555; /* Une ligne grise foncée */
+    margin: 8px 0; /* Un peu d'espace au-dessus et en dessous */
+}
