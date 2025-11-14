@@ -1,4 +1,4 @@
-// main.js (le fichier de votre site web)
+// Base de données Supabase
 
 const SUPABASE_URL = 'https://xdvqddbfvlsnlbcmyghl.supabase.co';
 const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkdnFkZGJmdmxzbmxiY215Z2hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTUyMDMsImV4cCI6MjA3ODUzMTIwM30.Bjbqpawz_yr6ghZ3arQXbAJ4N84Z3WiTWojJGbbyFTk'; // <-- Mettez votre clé
@@ -14,19 +14,17 @@ let currentChart = null;
 async function drawChart(skinName) {
     chartTitleElement.textContent = `Chargement de l'historique pour ${skinName}...`;
 
-    // On lit NOTRE table d'historique
     let { data: historyData, error } = await supabase
         .from('price_history')
-        .select('price, timestamp') // On a besoin du prix et de l'heure
+        .select('price, timestamp') 
         .eq('name', skinName)
-        .order('timestamp', { ascending: true }); // On trie par heure
+        .order('timestamp', { ascending: true }); 
 
     if (error) { chartTitleElement.textContent = "Erreur."; return; }
     if (!historyData || historyData.length === 0) { chartTitleElement.textContent = "Aucun historique."; return; }
     
     chartTitleElement.textContent = skinName;
 
-    // On transforme les données pour Chart.js
     const labels = historyData.map(point => new Date(point.timestamp).toLocaleString());
     const prices = historyData.map(point => point.price);
 
@@ -47,7 +45,6 @@ async function drawChart(skinName) {
     });
 }
 
-// Lit 'items' pour la liste
 async function afficherLaListe() {
     statusElement.textContent = 'Recherche des prix...';
     

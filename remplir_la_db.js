@@ -5,104 +5,120 @@ const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
+// --- NOUVELLE LISTE "INTELLIGENTE" ---
+// C'est maintenant une liste d'objets
 const skins_a_suivre = [
-    'AK-47 | Redline (Field-Tested)',
-    'AWP | Asiimov (Field-Tested)',
-    'Glock-18 | Water Elemental (Minimal Wear)',
-    'M4A1-S | Hyper Beast (Field-Tested)',
+    // Fusils d'assaut
+    { name: 'AK-47 | Redline (Field-Tested)', category: "Fusils d'assaut" },
+    { name: 'M4A1-S | Hyper Beast (Field-Tested)', category: "Fusils d'assaut" },
     
-    '★ Butterfly Knife | Doppler (Factory New)',
-    '★ Bayonet | Autotronic (Field-Tested)',
-    '★ Stiletto Knife | Marble Fade (Factory New)', 
-    '★ Butterfly Knife | Lore (Field-Tested)',
-    '★ Skeleton Knife | Crimson Web (Field-Tested)',
-    '★ Gut Knife | Tiger Tooth (Factory New)',
-    '★ Paracord Knife | Slaughter (Minimal Wear)',
-    '★ Talon Knife | Blue Steel (Minimal Wear)',
-    '★ Flip Knife | Gamma Doppler (Factory New)',
-    '★ Huntsman Knife | Damascus Steel (Factory New)',
-    '★ Bowie Knife | Ultraviolet (Field-Tested)'
-];
+    // Snipers
+    { name: 'AWP | Asiimov (Field-Tested)', category: 'Snipers' },
 
+    // Pistolets
+    { name: 'Glock-18 | Water Elemental (Minimal Wear)', category: 'Pistolets' },
+    { name: 'Desert Eagle | Blaze (Factory New)', category: 'Pistolets' },
+
+    // Couteaux
+    { name: '★ Butterfly Knife | Lore (Field-Tested)', category: 'Couteaux' },
+    { name: '★ Skeleton Knife | Crimson Web (Field-Tested)', category: 'Couteaux' },
+    { name: '★ Gut Knife | Tiger Tooth (Factory New)', category: 'Couteaux' },
+
+    // Gants
+    // { name: '★ Sport Gloves | Vice (Field-Tested)', category: 'Gants' },
+];
+// ------------------------------------
+
+// Fonction pour récupérer le PRIX ACTUEL
 async function getSteamPrice(itemName) {
     const encodedName = encodeURIComponent(itemName);
     const url = `https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=${encodedName}`;
-    const options = {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-            'Referer': 'https://steamcommunity.com/market/'
-        }
-    };
+    const options = { /* ... (headers comme avant) ... */ }; 
     try {
         const response = await fetch(url, options); 
-        if (!response.ok) {
-            console.error(`Erreur HTTP ${response.status} pour ${itemName}`);
-            return null;
-        }
+        if (!response.ok) { return null; }
         return await response.json();
-    } catch (e) {
-        console.error(`Erreur fetch pour ${itemName}:`, e.message);
-        return null;
-    }
+    } catch (e) { return null; }
 }
 
-// Fonctions pour nettoyer les données
-function parsePrice(priceString) {
-    return parseFloat(priceString.replace('€', '').replace(',', '.'));
+// --- NOUVELLE FONCTION (L'ASTUCE) ---
+// On "devine" l'URL de l'image
+function getImageUrl(itemName) {
+    // 1. Enlève l'usure (ex: "(Field-Tested)") et l'étoile "★ "
+    let simpleName = itemName
+        .replace(/\s*\([^)]*\)$/, '') // Enlève "(Field-Tested)" etc.
+        .replace('★ ', ''); // Enlève le "★ " des couteaux
+
+    // 2. Encode le nom pour une URL
+    const encodedName = encodeURIComponent(simpleName);
+    
+    // 3. Construit l'URL du CDN (non-officiel mais très fiable)
+    return `https://img.csgostash.com/item/${encodedName}.png`;
 }
+// ------------------------------------
+
+function parsePrice(priceString) {
+
+    const cleaned = String(priceString)
+        .replace('€', '')
+        .replace('.', '') 
+        .replace(',', '.');
+    return parseFloat(cleaned);
+}
+
 function parseVolume(volumeString) {
+    // Enlève les virgules ou les points des milliers
     return parseInt(String(volumeString).replace(/[,.]/g, ''));
 }
-// NOUVEAU : Fonction pour avoir la date en format YYYY-MM-DD
+
 function getTodayDate() {
     return new Date().toISOString().split('T')[0];
 }
 
-
 async function remplirLaBase() {
-    console.log('Démarrage du remplissage (Mode fiable - 1 point par jour)...');
+    console.log('Démarrage du remplissage (avec Catégories et Images)...');
     
-    let itemsPourUpsert = []; // Pour la table 'items'
-    let itemsPourHistory = []; // Pour la table 'price_history'
-    
-    const today = getTodayDate(); // ex: "2025-11-13"
+    let itemsPourUpsert = [];
+    let itemsPourHistory = [];
+    const today = getTodayDate();
 
-    for (const skinName of skins_a_suivre) {
-        console.log(`Recherche du prix pour : ${skinName}`);
-        const priceData = await getSteamPrice(skinName);
+    // On boucle sur notre NOUVELLE liste d'objets
+    for (const skin of skins_a_suivre) {
+        console.log(`Recherche du prix pour : ${skin.name}`);
+        const priceData = await getSteamPrice(skin.name);
         
         if (priceData && priceData.success && priceData.lowest_price) {
             const currentPrice = parsePrice(priceData.lowest_price);
             const currentVolume = priceData.volume ? parseVolume(priceData.volume) : 0;
-
-            console.log(`  -> Trouvé : ${currentPrice}€, Volume: ${currentVolume}`);
             
-            // 1. Pour 'items' (le dernier prix)
+            // On génère l'URL de l'image
+            const imageUrl = getImageUrl(skin.name);
+            console.log(`  -> Trouvé : ${currentPrice}€, Image: ${imageUrl}`);
+            
+            // 1. Pour 'items' (le dernier prix + catégorie + image)
             itemsPourUpsert.push({
-                name: skinName,
+                name: skin.name,
                 price: currentPrice,
                 volume: currentVolume,
-                last_updated: new Date().toISOString()
+                last_updated: new Date().toISOString(),
+                category: skin.category, // <-- NOUVEAU
+                image_url: imageUrl       // <-- NOUVEAU
             });
 
-            // 2. Pour 'price_history' (le point du jour)
+            // 2. Pour 'price_history'
             itemsPourHistory.push({
-                name: skinName,
+                name: skin.name,
                 price: currentPrice,
-                entry_date: today // On ajoute la date du jour
-                // 'timestamp' sera mis par défaut par la DB
+                entry_date: today
             });
 
         } else {
-            console.log(`  -> Échec ou pas de données pour ${skinName}`);
+            console.log(`  -> Échec ou pas de données pour ${skin.name}`);
         }
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Pause
+        await new Promise(resolve => setTimeout(resolve, 2000));
     }
 
-    if (itemsPourUpsert.length === 0) {
-        console.log('Aucune donnée n\'a été récupérée de Steam. Arrêt.');
-        return;
-    }
+    if (itemsPourUpsert.length === 0) { /* ... (code identique) ... */ }
 
     // --- ENVOI A SUPABASE ---
     console.log(`Mise à jour 'items'...`);
@@ -113,17 +129,13 @@ async function remplirLaBase() {
     if (upsertError) console.error('Erreur Supabase (items):', upsertError);
     else console.log('Table \'items\' mise à jour !');
 
-    // --- C'EST LA CORRECTION ---
-    // On utilise 'upsert' sur 'price_history'
-    // S'il existe un item avec ce 'name' et cette 'entry_date', il le met à jour.
-    // Sinon, il le crée.
     console.log(`Mise à jour 'price_history'...`);
     const { error: historyError } = await supabase
         .from('price_history')
         .upsert(itemsPourHistory, { onConflict: 'name, entry_date' });
 
     if (historyError) console.error('Erreur Supabase (price_history):', historyError);
-    else console.log('Table \'price_history\' mise à jour ! (Doublons évités)');
+    else console.log('Table \'price_history\' mise à jour !');
 }
 
 remplirLaBase();

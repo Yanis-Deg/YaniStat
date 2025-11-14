@@ -22,7 +22,6 @@ serve(async (req) => {
 
     const inventoryData = await steamResponse.json();
 
-    // 5. On renvoie les données à notre frontend
     return new Response(
       JSON.stringify(inventoryData),
       { headers: { 'Content-Type': 'application/json' } }
