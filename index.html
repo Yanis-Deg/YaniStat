@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YanisStat</title>
+    <style>
+        /* --- 1. ESTHÉTIQUE GÉNÉRALE (CSS) --- */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police moderne */
+            background-color: #f4f4f4; /* Gris très clair pour le fond */
+            color: #333;
+        }
+
+        /* --- 2. BARRE DE NAVIGATION (NAVBAR) --- */
+        header {
+            background-color: #2c3e50; /* Bleu nuit élégant */
+            color: white;
+            padding: 0 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Espacement entre Menu et Recherche */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative; /* Nécessaire pour le menu déroulant */
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 15px 10px;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #34495e;
+        }
+
+        /* Menu Déroulant (Sous-catégories) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            top: 100%; /* Juste en dessous du menu */
+            left: 0;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Afficher le menu au survol */
+        nav ul li:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Barre de recherche */
+        .search-container input {
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+        }
+
+        /* --- 3. STRUCTURE DE LA PAGE (LAYOUT) --- */
+        .container {
+            display: flex; /* Création des colonnes */
+            max-width: 1200px;
+            margin: 20px auto; /* Centrer la page */
+            gap: 20px; /* Espace entre le contenu et la sidebar */
+            padding: 0 20px;
+        }
+
+        /* Partie Principale (Vide pour l'instant) */
+        main {
+            flex: 3; /* Prend 3 parts de l'espace (75%) */
+            background-color: white;
+            min-height: 600px; /* Juste pour visualiser l'espace */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Barre Latérale (Sidebar) */
+        aside {
+            flex: 1; /* Prend 1 part de l'espace (25%) */
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: fit-content; /* S'adapte au contenu */
+        }
+
+        /* Style basique pour les widgets de la sidebar */
+        .sidebar-widget {
+            margin-bottom: 30px;
+        }
+        .sidebar-widget h3 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#">Actualité ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#">Économie</a>
+                        <a href="#">Politique</a>
+                        <a href="#">International</a>
+                    </div>
+                </li>
+                
+                <li>
+                    <a href="#">Article-Analyse ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#">Science</a>
+                        <a href="#">Tech</a>
+                        <a href="#">Société</a>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="#">Dataset ▾</a>
+                    <div class="dropdown-content">
+                        <a href="economie.html">Economie</a>
+                    </div>    
+                </li>
+            </ul>
+        </nav>
+
+        <div class="search-container">
+            <input type="text" placeholder="Rechercher...">
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <main>
+            <h1>Bienvenue</h1>
+            <p>Le contenu principal s'affichera ici.</p>
+        </main>
+
+        <aside>
+            <div class="sidebar-widget">
+                <h3>Dernières Publications</h3>
+                <p>• Article sur l'IA...</p>
+                <p>• Analyse boursière...</p>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3>Recommandations</h3>
+                <p>• Livre du mois</p>
+                <p>• Dataset populaire</p>
+            </div>
+        </aside>
+
+    </div>
+
+</body>
+</html>
