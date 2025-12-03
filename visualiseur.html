@@ -51,21 +51,173 @@
     </div>
 
     <script>
-        // 1. Récupérer les paramètres de l'URL (ex: ?file=pib.csv&titre=PIB)
+        
+        const catalogue = {
+            "Global Economy Indicators.csv": {
+                description: "Cet ensemble de données est compilé à partir de la base de données des principaux agrégats des comptes nationaux, qui présente une série de tableaux analytiques des comptes nationaux depuis 1970 pour plus de 200 pays et territoires du monde. Il est le fruit d'une coopération internationale entre le Service des statistiques économiques de la Division de statistique des Nations Unies, les organismes statistiques internationaux et les services statistiques nationaux de ces pays. Son élaboration fait suite à la recommandation de la Commission de statistique, lors de sa première session en 1947, selon laquelle la Division de statistique devait publier régulièrement les données les plus récentes disponibles sur les comptes nationaux pour le plus grand nombre possible de pays et de territoires.",
+                source: "https://www.kaggle.com/datasets/prasad22/global-economy-indicators?select=Global+Economy+Indicators.csv",
+                auteur: "---",
+                annee: "2023"
+            },
+            "life expectancy.csv": {
+                description: `AAbout Dataset
+Introduction
+Life expectancy at birth indicates the number of years a newborn infant would live if prevailing
+patterns of mortality at the time of its birth were to stay the same throughout its life. It is a key
+metric for assessing population health.
+
+Life expectancy has burgeoned since the advent of industrialization in the early 1900s and the world average has now more than doubled to 70 years. Yet, we still see inequality in life expectancy across and within countries. The study by Acemoglu and Johnson demonstrated the relationship between increased life expectancy
+and improvement in economic growth (GDP per capita), controlling for country-fixed effects [3]. In the
+table below, we have shown how life expectancy varies between high-income and low-income countries.
+However, further analysis is necessary to determine how the allocation of a country’s wealth through
+certain investments in healthcare, education, environmental management, and some socioeconomic
+factors have an overall effect in determining average life expectancy.
+
+
+
+The Sub-Saharan African region experiences the lowest life expectancy at birth compared to other
+regions over the past 3 decades. SSA countries have consistently ranked as the lowest-earning countries in terms of
+GDP per capita. Therefore, there is a huge scope for improvement in life expectancy in SSA countries
+and hence our research focuses on the 40 Sub-Saharan African (SSA) countries with the lowest GDP per
+capita
+
+Research Questions
+After reviewing the rich existing literature on Life Expectancy, we realized the lack of concrete
+research on understanding the impact of all-encompassing determinants that cover socio-economic and
+environmental factors for SSA countries using Panel Data techniques. Hence, we tried to address this
+inadequacy through our research. In this paper, we aim to have a better understanding of factors affecting
+life expectancy in the SSA region for an efficient policy-making process and better allocation of funds
+and resources in addressing the prevalence of low life expectancy in Sub-Saharan Africa. To achieve that
+we attempt to answer the following questions in this research:
+
+What’s the Impact of Expenditure on Health and Education (% of GDP) on Life Expectancy?
+How does the prevalence of undernourishment and communicable disease Affect Life Expectancy?
+Do factors like corruption and unemployment rate impact life expectancy? If yes, quantify
+Increase in CO2 emissions decrease life expectancy? Is it significant?
+Data
+Main sources of data - World Bank Open Data & Our World in Data
+
+Country - 174 countries - list
+
+Country Code - 3-letter code
+
+Region - region of the world country is located in
+
+IncomeGroup - country's income class
+
+Year - 2000-2019 (both included)
+
+Life expectancy - data
+
+Prevalence of Undernourishment (% of the population) - Prevalence of undernourishment is the
+percentage of the population whose habitual food consumption is insufficient to provide the dietary
+energy levels that are required to maintain a normally active and healthy life
+
+Carbon dioxide emissions (kiloton) - Carbon dioxide emissions are those stemming from the burning
+of fossil fuels and the manufacture of cement. They include carbon dioxide produced during the
+consumption of solid, liquid, and gas fuels and gas flaring
+
+Health Expenditure (% of GDP) - Level of current health expenditure expressed as a percentage of GDP. Estimates of current health expenditures include healthcare goods and services consumed during each year. This indicator does not include capital health expenditures such as buildings,
+machinery, IT, and stocks of vaccines for emergencies or outbreaks
+
+Education Expenditure (% of GDP) - General government expenditure on education (current,
+capital, and transfers) is expressed as a percentage of GDP. It includes expenditures funded by
+transfers from international sources to the government. General government usually refers to local,
+regional, and central governments.
+
+Unemployment (% total labor force) - Unemployment refers to the % share of the labor force that
+is without work but available for and seeking employment
+
+Corruption (CPIA rating) - Transparency, accountability, and corruption in the public sector assets
+the extent to which the executive can be held accountable for its use of funds and for the results
+of its actions by the electorate and by the legislature and judiciary, and the extent to which public employees within the executive are required to account for administrative decisions, use of resources,
+and results obtained.
+
+Sanitation - People using safely managed sanitation services (% of the population): The percentage of people using improved sanitation facilities that are not shared with other households and where excreta are safely disposed of in situ or transported and treated offsite. Improved sanitation facilities include flush/pour flush to piped sewer systems, septic tanks, or pit latrines: ventilated improved pit latrines, compositing toilets, or pit latrines with slabs.
+WHO/UNICEF Joint Monitoring Programme (JMP) for Water Supply, Sanitation and Hygiene (washdata.org).
+
+Disability-Adjusted Life Years (DALYs) due to Injuries - One DALY represents
+the loss of the equivalent of one year of full health. DALYs for an injury or health
+condition is the sum of the years of life lost due to premature mortality (YLLs) and the years
+lived with a disability (YLDs) due to prevalent cases of the disease in a population
+
+Disability-Adjusted Life Years (DALYs) due to Communicable diseases - One DALY represents
+the loss of the equivalent of one year of full health. DALYs for a communicable disease or health
+condition is the sum of the years of life lost due to premature mortality (YLLs) and the years
+lived with a disability (YLDs) due to prevalent cases of the disease in a population
+
+Disability-Adjusted Life Years (DALYs) due to Non-Communicable diseases - One DALY represents
+the loss of the equivalent of one year of full health. DALYs for a non-communicable disease or health
+condition is the sum of the years of life lost due to premature mortality (YLLs) and the years
+lived with a disability (YLDs) due to prevalent cases of the disease in a population
+
+Health Expenditure (% of GDP) - Level of current health expenditure expressed as a percentage of GDP. Estimates of current health expenditures include healthcare goods and services consumed during each year. This indicator does not include capital health expenditures such as buildings,
+machinery, IT, and stocks of vaccines for emergencies or outbreaks
+
+Education Expenditure (% of GDP) - General government expenditure on education (current,
+capital, and transfers) is expressed as a percentage of GDP. It includes expenditures funded by
+transfers from international sources to the government. General government usually refers to local,
+regional, and central governments.
+
+Unemployment (% total labor force) - Unemployment refers to the % share of the labor force that
+is without work but available for and seeking employment
+
+Corruption (CPIA rating) - Transparency, accountability, and corruption in the public sector assets
+the extent to which the executive can be held accountable for its use of funds and for the results
+of its actions by the electorate and by the legislature and judiciary, and the extent to which public employees within the executive are required to account for administrative decisions, use of resources,
+and results obtained.
+
+Disability-Adjusted Life Years (DALYs) due to Communicable diseases - One DALY represents
+the loss of the equivalent of one year of full health. DALYs for a communicable disease or health
+condition is the sum of the years of life lost due to premature mortality (YLLs) and the years
+lived with a disability (YLDs) due to prevalent cases of the disease in a population
+
+Prevalence of Undernourishment (% of the population) - Prevalence of undernourishment is the
+percentage of the population whose habitual food consumption is insufficient to provide the dietary
+energy levels that are required to maintain a normally active and healthy life
+
+Carbon dioxide emissions (kiloton) - Carbon dioxide emissions are those stemming from the burning
+of fossil fuels and the manufacture of cement. They include carbon dioxide produced during the
+consumption of solid, liquid, and gas fuels and gas flaring`,
+                source: "World Bank Open Data & Our World in Data https://www.kaggle.com/datasets/mjshri23/life-expectancy-and-socio-economic-world-bank/data",
+                auteur: "--",
+                annee: "2023"
+            }
+        };
+
+
+
         const params = new URLSearchParams(window.location.search);
         const fileName = params.get('file');
-        const title = params.get('titre');
+        const titleFromUrl = params.get('titre');
 
-        // 2. Mettre à jour le titre et le lien de téléchargement
-        if (title) document.getElementById('dataset-title').innerText = title;
+        // Mise à jour du titre principal
+        if (titleFromUrl) document.getElementById('dataset-title').innerText = titleFromUrl;
+
         if (fileName) {
             const filePath = 'Dataset/Economie/' + fileName;
-            document.getElementById('download-link').href = filePath;
             
-            // Description (Simulée pour l'instant)
-            document.getElementById('dataset-desc').innerText = "Voici une visualisation complète des données contenues dans le fichier " + fileName + ".";
+            // A. Mise à jour du bouton télécharger
+            document.getElementById('download-link').href = filePath;
 
-            // 3. Charger et Lire le fichier CSV
+            // B. RECHERCHE DES INFOS DANS LE CATALOGUE
+            // On regarde si on a des infos pour ce fichier précis
+            if (catalogue[fileName]) {
+                const info = catalogue[fileName];
+                
+                // On injecte le texte
+                document.getElementById('dataset-desc').innerText = info.description;
+                
+                // On peut construire un texte plus riche pour la source
+                document.getElementById('dataset-source').innerHTML = 
+                    `<strong></strong> ${info.source} | <strong>Auteur :</strong> ${info.auteur} | <strong>Année :</strong> ${info.annee}`;
+            } else {
+                // Si on a pas d'infos dans le catalogue
+                document.getElementById('dataset-desc').innerText = "Aucune description détaillée disponible pour ce fichier.";
+                document.getElementById('dataset-source').innerText = "Source inconnue";
+            }
+
+            // C. CHARGEMENT DU CSV
             fetch(filePath)
                 .then(response => {
                     if (!response.ok) throw new Error("Fichier non trouvé");
@@ -81,25 +233,20 @@
             document.getElementById('table-container').innerHTML = "<p>Aucun dataset sélectionné.</p>";
         }
 
-        // Fonction pour convertir le CSV en Tableau HTML
+        // D. FONCTION D'AFFICHAGE (Même chose qu'avant)
         function afficherTableau(csv) {
-            const rows = csv.split('\n'); 
+            const rows = csv.split('\n');
             let html = '<table>';
             
             rows.forEach((row, index) => {
-                // Ignorer les lignes vides
                 if (row.trim() === '') return;
-
-                const cols = row.split(','); // ATTENTION: Si votre CSV utilise des points-virgules (;), changez ',' par ';' ici.
+                // ATTENTION : Changez ',' par ';' ci-dessous si votre CSV vient d'un Excel français
+                const cols = row.split(','); 
                 
                 html += '<tr>';
                 cols.forEach(col => {
-                    // Si c'est la première ligne (index 0), on met des <th> (titres), sinon des <td>
-                    if (index === 0) {
-                        html += `<th>${col.trim()}</th>`;
-                    } else {
-                        html += `<td>${col.trim()}</td>`;
-                    }
+                    if (index === 0) html += `<th>${col.trim()}</th>`;
+                    else html += `<td>${col.trim()}</td>`;
                 });
                 html += '</tr>';
             });
